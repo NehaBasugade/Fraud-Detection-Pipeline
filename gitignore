@@ -1,0 +1,76 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Build / packaging
+build/
+dist/
+site/
+.eggs/
+*.egg
+*.egg-info/
+pip-wheel-metadata/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Type-check / lint caches
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+.python-version
+
+# Data
+data/raw/
+data/interim/
+data/processed/
+*.parquet
+*.feather
+
+# Artifacts / models / predictions
+artifacts/
+checkpoints/
+outputs/
+models/
+
+*.npy
+*.npz
+*.pt
+*.pth
+*.pkl
+*.joblib
+*.bin
+
+# Temporary files
+*.tmp
+*.temp
