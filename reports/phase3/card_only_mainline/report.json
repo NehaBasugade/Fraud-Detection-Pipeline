@@ -1,0 +1,232 @@
+{
+  "phase": 3,
+  "name": "Graph Construction - Card Only",
+  "graph_version": "phase3_card_only_v1",
+  "objective": "Finalize a leakage-safe, production-realistic transaction-centered graph using only the surviving card relation.",
+  "schema": {
+    "node_types": [
+      "transaction",
+      "card_entity"
+    ],
+    "edge_types": [
+      "transaction_to_card"
+    ],
+    "transaction_centered": true,
+    "entity_entity_edges": false,
+    "transaction_transaction_edges": false
+  },
+  "entity_construction": {
+    "card_entity_fields": [
+      "card1",
+      "card2",
+      "card3",
+      "card5"
+    ],
+    "key_name": "card_entity_key"
+  },
+  "feature_policy": {
+    "graph_structure_columns_removed_from_transaction_features": [
+      "card1",
+      "card2",
+      "card3",
+      "card5"
+    ],
+    "metadata_retained_in_transaction_tables": [
+      "TransactionID",
+      "TransactionDT",
+      "isFraud",
+      "split",
+      "chronological_index_in_split",
+      "transaction_node_id"
+    ]
+  },
+  "leakage_policy": {
+    "train_graph_uses_train_only": true,
+    "validation_inference_requires_train_plus_prior_validation_history_only": true,
+    "test_inference_requires_train_plus_validation_plus_prior_test_history_only": true,
+    "no_future_aware_aggregates": true,
+    "no_label_derived_entity_features": true,
+    "missing_values_do_not_create_shared_hub_nodes": true,
+    "note": "Artifacts are saved chronologically by split so downstream training/inference can enforce prefix-only history."
+  },
+  "artifact_paths": {
+    "artifact_dir": "artifacts/phase3_card_only",
+    "train_transaction_nodes": "artifacts/phase3_card_only/train_transaction_nodes.parquet",
+    "val_transaction_nodes": "artifacts/phase3_card_only/val_transaction_nodes.parquet",
+    "test_transaction_nodes": "artifacts/phase3_card_only/test_transaction_nodes.parquet",
+    "train_edges": "artifacts/phase3_card_only/train_transaction_to_card_edges.parquet",
+    "val_edges": "artifacts/phase3_card_only/val_transaction_to_card_edges.parquet",
+    "test_edges": "artifacts/phase3_card_only/test_transaction_to_card_edges.parquet",
+    "card_nodes": "artifacts/phase3_card_only/card_nodes.parquet"
+  },
+  "counts": {
+    "train_transactions": 413378,
+    "val_transactions": 88581,
+    "test_transactions": 88581,
+    "card_nodes_total": 14845,
+    "train_edges": 413378,
+    "val_edges": 88581,
+    "test_edges": 88581,
+    "global_edges": 590540
+  },
+  "connectivity": {
+    "train": {
+      "transactions_total": 413378,
+      "transactions_with_card_entity": 413378,
+      "rate_with_card_entity": 1.0
+    },
+    "val": {
+      "transactions_total": 88581,
+      "transactions_with_card_entity": 88581,
+      "rate_with_card_entity": 1.0
+    },
+    "test": {
+      "transactions_total": 88581,
+      "transactions_with_card_entity": 88581,
+      "rate_with_card_entity": 1.0
+    },
+    "global": {
+      "transactions_total": 590540,
+      "transactions_with_card_entity": 590540,
+      "rate_with_card_entity": 1.0
+    }
+  },
+  "degree_stats": {
+    "train_card_degree": {
+      "n_entities": 13217,
+      "n_edges": 413378,
+      "mean_degree": 31.27623515169857,
+      "median_degree": 3.0,
+      "p90_degree": 34.0,
+      "p99_degree": 544.5200000000004,
+      "max_degree": 9651.0,
+      "singleton_entity_rate": 0.2885677536506015,
+      "top_1pct_entity_edge_share": 0.5095723526651152
+    },
+    "global_card_degree": {
+      "n_entities": 14845,
+      "n_edges": 590540,
+      "mean_degree": 39.78039744021556,
+      "median_degree": 4.0,
+      "p90_degree": 41.0,
+      "p99_degree": 676.239999999998,
+      "max_degree": 14112.0,
+      "singleton_entity_rate": 0.27484001347254966,
+      "top_1pct_entity_edge_share": 0.5296525214210722
+    }
+  },
+  "fraud_rate_by_train_degree_bucket": {
+    "train": [
+      {
+        "train_degree_bucket": "1",
+        "n_transactions": 3814,
+        "fraud_rate": 0.03303618248557944
+      },
+      {
+        "train_degree_bucket": "2_5",
+        "n_transactions": 13428,
+        "fraud_rate": 0.02532022639261245
+      },
+      {
+        "train_degree_bucket": "6_20",
+        "n_transactions": 32688,
+        "fraud_rate": 0.022944199706314245
+      },
+      {
+        "train_degree_bucket": "21_100",
+        "n_transactions": 60412,
+        "fraud_rate": 0.030556843011322252
+      },
+      {
+        "train_degree_bucket": "101_1000",
+        "n_transactions": 133029,
+        "fraud_rate": 0.04317855505190597
+      },
+      {
+        "train_degree_bucket": "1000_plus",
+        "n_transactions": 170007,
+        "fraud_rate": 0.033716258742287085
+      }
+    ],
+    "val": [
+      {
+        "train_degree_bucket": "unseen_in_train",
+        "n_transactions": 1155,
+        "fraud_rate": 0.0761904761904762
+      },
+      {
+        "train_degree_bucket": "1",
+        "n_transactions": 765,
+        "fraud_rate": 0.030065359477124184
+      },
+      {
+        "train_degree_bucket": "2_5",
+        "n_transactions": 2627,
+        "fraud_rate": 0.03387894937190712
+      },
+      {
+        "train_degree_bucket": "6_20",
+        "n_transactions": 6265,
+        "fraud_rate": 0.019952114924181964
+      },
+      {
+        "train_degree_bucket": "21_100",
+        "n_transactions": 12997,
+        "fraud_rate": 0.0261598830499346
+      },
+      {
+        "train_degree_bucket": "101_1000",
+        "n_transactions": 28479,
+        "fraud_rate": 0.0382035886091506
+      },
+      {
+        "train_degree_bucket": "1000_plus",
+        "n_transactions": 36293,
+        "fraud_rate": 0.03551649078334665
+      }
+    ],
+    "test": [
+      {
+        "train_degree_bucket": "unseen_in_train",
+        "n_transactions": 1706,
+        "fraud_rate": 0.043962485345838215
+      },
+      {
+        "train_degree_bucket": "1",
+        "n_transactions": 1062,
+        "fraud_rate": 0.023540489642184557
+      },
+      {
+        "train_degree_bucket": "2_5",
+        "n_transactions": 2822,
+        "fraud_rate": 0.025513819985825654
+      },
+      {
+        "train_degree_bucket": "6_20",
+        "n_transactions": 6108,
+        "fraud_rate": 0.023575638506876228
+      },
+      {
+        "train_degree_bucket": "21_100",
+        "n_transactions": 13406,
+        "fraud_rate": 0.025510965239445026
+      },
+      {
+        "train_degree_bucket": "101_1000",
+        "n_transactions": 27684,
+        "fraud_rate": 0.04056494726195636
+      },
+      {
+        "train_degree_bucket": "1000_plus",
+        "n_transactions": 35793,
+        "fraud_rate": 0.03637582767580253
+      }
+    ]
+  },
+  "decision": {
+    "mainline_graph_choice": "card_only",
+    "address_status": "dropped_from_mainline",
+    "device_status": "unavailable_in_processed_data",
+    "reason": "Card relation remained structurally usable. Address required severe pruning and retained only a tiny fraction of edges in v2. Device could not be recovered from processed parquet candidate columns. Card-only is the cleanest leakage-safe graph to carry forward into modeling."
+  }
+}

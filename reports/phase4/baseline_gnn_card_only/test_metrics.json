@@ -1,0 +1,8 @@
+{
+  "roc_auc": 0.8461261955834846,
+  "pr_auc": 0.31458813913523154,
+  "recall_at_precision_0_80": 0.05708725267596497,
+  "threshold_at_precision_0_80": 0.9880933165550232,
+  "recall_at_precision_0_90": 0.003892312682452157,
+  "threshold_at_precision_0_90": 0.9999722242355347
+}

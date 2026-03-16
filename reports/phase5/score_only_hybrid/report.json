@@ -1,0 +1,20 @@
+{
+  "phase": 5,
+  "name": "Minimal score-only hybrid",
+  "control": {
+    "description": "LightGBM on filtered Phase 4 tabular matrix only"
+  },
+  "hybrid": {
+    "description": "LightGBM on same filtered matrix + 1 extra feature = strict GNN score"
+  },
+  "notes": [
+    "train score is strict expanding-window OOF",
+    "earliest train rows without leakage-safe OOF scores were dropped from both control and hybrid training",
+    "val score uses train history only",
+    "test score uses train+val history only",
+    "this is the first defendable hybrid"
+  ],
+  "train_rows_used": 275586,
+  "original_train_rows": 413378,
+  "hybrid_feature_dim": 390
+}

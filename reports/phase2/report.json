@@ -1,0 +1,93 @@
+{
+  "phase": "Phase 2 - Tabular Baselines",
+
+  "dataset": {
+    "train_rows": 413378,
+    "validation_rows": 88581,
+    "test_rows": 88581,
+    "fraud_rate_train": 0.03516878014795175,
+    "fraud_rate_validation": 0.03434145019812375,
+    "fraud_rate_test": 0.03480430340592226
+  },
+
+  "feature_policy": {
+    "total_features": 389,
+    "numeric_features": 375,
+    "categorical_features": 14,
+    "dropped_columns": [
+      "TransactionID",
+      "TransactionDT",
+      "isFraud",
+      "D7",
+      "dist2"
+    ]
+  },
+
+  "models": {
+
+    "logistic_regression": {
+      "training_time_seconds": 2364.98,
+      "converged": false,
+
+      "validation_metrics": {
+        "roc_auc": 0.8447545205838993,
+        "pr_auc": 0.3846664532152289,
+        "recall_at_precision_80": 0.1673241288625904,
+        "recall_at_precision_90": 0.0641025641025641
+      },
+
+      "test_metrics": {
+        "roc_auc": 0.8264152736344269,
+        "pr_auc": 0.1665593799866192,
+        "recall_at_precision_80": 0.0,
+        "recall_at_precision_90": 0.0
+      }
+    },
+
+    "lightgbm": {
+      "training_time_seconds": 12.28,
+      "best_iteration": 378,
+
+      "validation_metrics": {
+        "roc_auc": 0.920197969377291,
+        "pr_auc": 0.5676519933237084,
+        "recall_at_precision_80": 0.3727810650887574,
+        "recall_at_precision_90": 0.27317554240631164
+      },
+
+      "test_metrics": {
+        "roc_auc": 0.8914849187906867,
+        "pr_auc": 0.5150644405727051,
+        "recall_at_precision_80": 0.34771326629905935,
+        "recall_at_precision_90": 0.22478105741161206
+      },
+
+      "operating_thresholds": {
+        "validation_precision_80": {
+          "threshold": 0.8868317787154807,
+          "recall": 0.3727810650887574
+        },
+
+        "validation_precision_90": {
+          "threshold": 0.958050479660888,
+          "recall": 0.27317554240631164
+        },
+
+        "test_precision_80": {
+          "threshold": 0.9034204440807948,
+          "recall": 0.34771326629905935
+        },
+
+        "test_precision_90": {
+          "threshold": 0.9805453166829876,
+          "recall": 0.22478105741161206
+        }
+      }
+    }
+  },
+
+  "benchmark": {
+    "winner": "LightGBM",
+    "reason": "Substantially higher PR-AUC and strong recall at high precision thresholds on the temporally later test split."
+  }
+}

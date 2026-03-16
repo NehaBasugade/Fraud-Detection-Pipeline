@@ -1,0 +1,541 @@
+{
+  "phase": 3,
+  "name": "Graph Construction",
+  "graph_version": "phase3_v2",
+  "metadata": {
+    "graph_version": "phase3_v2",
+    "dataset": "IEEE-CIS Fraud Detection processed parquet artifacts from Phase 1",
+    "schema": {
+      "node_types": [
+        "transaction",
+        "card_entity",
+        "address_entity",
+        "device_entity"
+      ],
+      "edge_types": [
+        "transaction_to_card",
+        "transaction_to_address",
+        "transaction_to_device"
+      ]
+    },
+    "entity_key_logic": {
+      "card_entity": {
+        "source_columns": [
+          "card1",
+          "card2",
+          "card3",
+          "card5"
+        ],
+        "missing_policy": "if all source columns missing, no node and no edge",
+        "pruning_policy": {
+          "enabled": false,
+          "train_degree_range": [
+            1,
+            5000
+          ]
+        }
+      },
+      "address_entity": {
+        "source_columns": [
+          "addr1",
+          "addr2"
+        ],
+        "missing_policy": "if all source columns missing, no node and no edge",
+        "pruning_policy": {
+          "enabled": true,
+          "train_degree_range": [
+            2,
+            500
+          ]
+        }
+      },
+      "device_entity": {
+        "source_columns": [],
+        "candidate_columns_checked": [
+          "DeviceInfo",
+          "DeviceType",
+          "id_30",
+          "id_31"
+        ],
+        "missing_policy": "if all source columns missing, no node and no edge"
+      }
+    },
+    "feature_policy": {
+      "dropped_from_transaction_node_features": [
+        "D7",
+        "TransactionDT",
+        "TransactionID",
+        "addr1",
+        "addr2",
+        "address_entity_key",
+        "address_entity_key_raw",
+        "address_entity_key_raw_pruned",
+        "card1",
+        "card2",
+        "card3",
+        "card5",
+        "card_entity_key",
+        "card_entity_key_final",
+        "card_entity_key_pruned",
+        "device_entity_key",
+        "dist2",
+        "isFraud",
+        "split",
+        "transaction_node_id"
+      ],
+      "note": "Fields used to define graph entity structure are removed from transaction node features in v2."
+    },
+    "counts": {
+      "transactions": 590540,
+      "card_entities": 14845,
+      "address_entities": 190,
+      "device_entities": 0,
+      "transaction_card_edges": 590540,
+      "transaction_address_edges": 4835,
+      "transaction_device_edges": 0,
+      "transaction_feature_columns": 383
+    },
+    "split_counts": {
+      "train": 413378,
+      "val": 88581,
+      "test": 88581
+    },
+    "leakage_policy": {
+      "training_graph": "train only",
+      "validation_inference": "train + prior validation history only",
+      "test_inference": "train + validation + prior test history only",
+      "label_derived_entity_features": false,
+      "future_aware_aggregates_allowed": false,
+      "missing_values_create_shared_entity_nodes": false,
+      "address_pruning_thresholds_selected_from": "train degrees only"
+    }
+  },
+  "diagnostics": {
+    "column_audit": [
+      {
+        "column": "card1",
+        "exists": true,
+        "non_null_count": 590540,
+        "non_null_rate": 1.0,
+        "n_unique_non_null": 13553
+      },
+      {
+        "column": "card2",
+        "exists": true,
+        "non_null_count": 581607,
+        "non_null_rate": 0.9848731669319606,
+        "n_unique_non_null": 500
+      },
+      {
+        "column": "card3",
+        "exists": true,
+        "non_null_count": 588975,
+        "non_null_rate": 0.9973498831577878,
+        "n_unique_non_null": 114
+      },
+      {
+        "column": "card5",
+        "exists": true,
+        "non_null_count": 586281,
+        "non_null_rate": 0.9927879567853152,
+        "n_unique_non_null": 119
+      },
+      {
+        "column": "addr1",
+        "exists": true,
+        "non_null_count": 524834,
+        "non_null_rate": 0.8887357333965523,
+        "n_unique_non_null": 332
+      },
+      {
+        "column": "addr2",
+        "exists": true,
+        "non_null_count": 524834,
+        "non_null_rate": 0.8887357333965523,
+        "n_unique_non_null": 74
+      },
+      {
+        "column": "DeviceInfo",
+        "exists": false,
+        "non_null_count": 0,
+        "non_null_rate": 0.0,
+        "n_unique_non_null": 0
+      },
+      {
+        "column": "DeviceType",
+        "exists": false,
+        "non_null_count": 0,
+        "non_null_rate": 0.0,
+        "n_unique_non_null": 0
+      },
+      {
+        "column": "id_30",
+        "exists": false,
+        "non_null_count": 0,
+        "non_null_rate": 0.0,
+        "n_unique_non_null": 0
+      },
+      {
+        "column": "id_31",
+        "exists": false,
+        "non_null_count": 0,
+        "non_null_rate": 0.0,
+        "n_unique_non_null": 0
+      }
+    ],
+    "connectivity": {
+      "transactions_total": 590540,
+      "transactions_with_at_least_1_entity": 590540,
+      "transactions_with_at_least_2_entities": 4835,
+      "transactions_with_all_entities": 0,
+      "rate_with_at_least_1_entity": 1.0,
+      "rate_with_at_least_2_entities": 0.00818742168185051,
+      "rate_with_all_entities": 0.0
+    },
+    "card_degree_stats": {
+      "n_entities": 14845,
+      "n_edges": 590540,
+      "mean_degree": 39.78039744021556,
+      "median_degree": 4.0,
+      "p90_degree": 41.0,
+      "p99_degree": 676.239999999998,
+      "max_degree": 14112,
+      "singleton_entities": 4080,
+      "singleton_entity_rate": 0.27484001347254966,
+      "top_hubs": [
+        {
+          "entity_key": "d20a7c75d8bdb53cd21f",
+          "degree": 14112
+        },
+        {
+          "entity_key": "7b43132d54008f632659",
+          "degree": 10332
+        },
+        {
+          "entity_key": "e568b78717ddec939e05",
+          "degree": 10312
+        },
+        {
+          "entity_key": "0ad34f635677a545a406",
+          "degree": 8844
+        },
+        {
+          "entity_key": "d873e1038ac24350d298",
+          "degree": 7918
+        },
+        {
+          "entity_key": "77819211f44f78ee5145",
+          "degree": 7079
+        },
+        {
+          "entity_key": "bfb30ec688c92d3fa37f",
+          "degree": 6766
+        },
+        {
+          "entity_key": "f954e840386b36356bd8",
+          "degree": 6760
+        },
+        {
+          "entity_key": "9c7fb66a7bbd9c594c6c",
+          "degree": 6126
+        },
+        {
+          "entity_key": "0d24943e799ea08e1807",
+          "degree": 6047
+        },
+        {
+          "entity_key": "68d6505dc107c05521a3",
+          "degree": 5325
+        },
+        {
+          "entity_key": "1248fb2c083e8da4bd34",
+          "degree": 5155
+        },
+        {
+          "entity_key": "1dc0f91a89f2c3e99214",
+          "degree": 5110
+        },
+        {
+          "entity_key": "a0f95a96ca653b92fe17",
+          "degree": 4604
+        },
+        {
+          "entity_key": "8715fe9ea457091da7e1",
+          "degree": 4197
+        },
+        {
+          "entity_key": "51afbbb0e326c1c3d5e1",
+          "degree": 3973
+        },
+        {
+          "entity_key": "9140af3f6e04cbd1d15a",
+          "degree": 3914
+        },
+        {
+          "entity_key": "ceced31af2c9563b158e",
+          "degree": 3864
+        },
+        {
+          "entity_key": "45692094f7ae3c284aa1",
+          "degree": 3739
+        },
+        {
+          "entity_key": "02d9c786672e9d77142d",
+          "degree": 3677
+        }
+      ]
+    },
+    "address_degree_stats": {
+      "n_entities": 190,
+      "n_edges": 4835,
+      "mean_degree": 25.44736842105263,
+      "median_degree": 5.0,
+      "p90_degree": 41.39999999999992,
+      "p99_degree": 430.0199999999988,
+      "max_degree": 771,
+      "singleton_entities": 0,
+      "singleton_entity_rate": 0.0,
+      "top_hubs": [
+        {
+          "entity_key": "c5689d0cff911658c3a1",
+          "degree": 771
+        },
+        {
+          "entity_key": "c1a8154beacbd092aa03",
+          "degree": 503
+        },
+        {
+          "entity_key": "2ed6d72eaa207b404bf1",
+          "degree": 421
+        },
+        {
+          "entity_key": "165cb99ecfe7280702b1",
+          "degree": 342
+        },
+        {
+          "entity_key": "57b1c10e4bbd8e765ca7",
+          "degree": 309
+        },
+        {
+          "entity_key": "2753fe5a928244d16327",
+          "degree": 169
+        },
+        {
+          "entity_key": "915132559e995a502b4b",
+          "degree": 157
+        },
+        {
+          "entity_key": "e61689385d91017a9467",
+          "degree": 101
+        },
+        {
+          "entity_key": "8222145430fb2bf2e8c5",
+          "degree": 94
+        },
+        {
+          "entity_key": "30182dec59c590d486da",
+          "degree": 90
+        },
+        {
+          "entity_key": "1e00b0ec3b4013a623cc",
+          "degree": 84
+        },
+        {
+          "entity_key": "5c58af2c882d4b691879",
+          "degree": 84
+        },
+        {
+          "entity_key": "08c8d42174599e213943",
+          "degree": 70
+        },
+        {
+          "entity_key": "15d9e26b58bcc0c6942e",
+          "degree": 69
+        },
+        {
+          "entity_key": "2e451de1d9547fd6e5ad",
+          "degree": 68
+        },
+        {
+          "entity_key": "7bf9c82c03d30924c3f2",
+          "degree": 59
+        },
+        {
+          "entity_key": "99279bc61c7c03b26673",
+          "degree": 57
+        },
+        {
+          "entity_key": "ad9b03f9fc70d8f96776",
+          "degree": 54
+        },
+        {
+          "entity_key": "e3874f6a6eaed62e2ded",
+          "degree": 54
+        },
+        {
+          "entity_key": "84e3a03a26ebd926cbce",
+          "degree": 40
+        }
+      ]
+    },
+    "device_degree_stats": {
+      "n_entities": 0,
+      "n_edges": 0,
+      "mean_degree": 0.0,
+      "median_degree": 0.0,
+      "p90_degree": 0.0,
+      "p99_degree": 0.0,
+      "max_degree": 0,
+      "singleton_entities": 0,
+      "singleton_entity_rate": 0.0,
+      "top_hubs": []
+    },
+    "card_edge_concentration": {
+      "top_entity_edge_share": {
+        "top_1pct_entities_share_of_edges": 0.5296525214210722,
+        "top_5pct_entities_share_of_edges": 0.77299759542114
+      }
+    },
+    "address_edge_concentration": {
+      "top_entity_edge_share": {
+        "top_1pct_entities_share_of_edges": 0.26349534643226474,
+        "top_5pct_entities_share_of_edges": 0.6115822130299896
+      }
+    },
+    "device_edge_concentration": {
+      "top_entity_edge_share": {}
+    },
+    "fraud_rate_by_train_degree_bucket": {
+      "card": [
+        {
+          "entity_type": "card",
+          "degree_bucket": "1",
+          "transactions": 3814,
+          "fraud_rate": 0.03303618248557944
+        },
+        {
+          "entity_type": "card",
+          "degree_bucket": "2",
+          "transactions": 3532,
+          "fraud_rate": 0.028312570781426953
+        },
+        {
+          "entity_type": "card",
+          "degree_bucket": "3-5",
+          "transactions": 9896,
+          "fraud_rate": 0.024252223120452707
+        },
+        {
+          "entity_type": "card",
+          "degree_bucket": "6-10",
+          "transactions": 13006,
+          "fraud_rate": 0.026987544210364447
+        },
+        {
+          "entity_type": "card",
+          "degree_bucket": "11-20",
+          "transactions": 19682,
+          "fraud_rate": 0.020272330047759374
+        },
+        {
+          "entity_type": "card",
+          "degree_bucket": "21-100",
+          "transactions": 60412,
+          "fraud_rate": 0.030556843011322252
+        },
+        {
+          "entity_type": "card",
+          "degree_bucket": "101-500",
+          "transactions": 89240,
+          "fraud_rate": 0.03542133572389063
+        },
+        {
+          "entity_type": "card",
+          "degree_bucket": "501+",
+          "transactions": 213796,
+          "fraud_rate": 0.03889221500869988
+        }
+      ],
+      "address": [
+        {
+          "entity_type": "address",
+          "degree_bucket": "2",
+          "transactions": 100,
+          "fraud_rate": 0.03
+        },
+        {
+          "entity_type": "address",
+          "degree_bucket": "3-5",
+          "transactions": 228,
+          "fraud_rate": 0.06140350877192982
+        },
+        {
+          "entity_type": "address",
+          "degree_bucket": "6-10",
+          "transactions": 245,
+          "fraud_rate": 0.0326530612244898
+        },
+        {
+          "entity_type": "address",
+          "degree_bucket": "11-20",
+          "transactions": 235,
+          "fraud_rate": 0.06808510638297872
+        },
+        {
+          "entity_type": "address",
+          "degree_bucket": "21-100",
+          "transactions": 1114,
+          "fraud_rate": 0.11400359066427289
+        },
+        {
+          "entity_type": "address",
+          "degree_bucket": "101-500",
+          "transactions": 2083,
+          "fraud_rate": 0.09313490158425348
+        }
+      ],
+      "device": []
+    },
+    "missing_rates": {
+      "card_entity_key_final": 0.0,
+      "address_entity_key": 0.9918125783181495,
+      "device_entity_key": 1.0
+    },
+    "pruning": {
+      "address": {
+        "enabled": true,
+        "applied": true,
+        "key_col": "address_entity_key_raw",
+        "original_non_null_edges": 524834,
+        "retained_non_null_edges": 4835,
+        "dropped_non_null_edges": 519999,
+        "retained_edge_rate": 0.009212436694269044,
+        "min_train_degree": 2,
+        "max_train_degree": 500,
+        "n_train_keys_total": 399,
+        "n_train_keys_retained": 190
+      },
+      "card": {
+        "enabled": false,
+        "applied": false
+      },
+      "address_retention_by_split": {
+        "train": {
+          "original_edges": 365860,
+          "retained_edges": 4005,
+          "retained_rate": 0.010946810255288908
+        },
+        "val": {
+          "original_edges": 79681,
+          "retained_edges": 493,
+          "retained_rate": 0.006187171345741143
+        },
+        "test": {
+          "original_edges": 79293,
+          "retained_edges": 337,
+          "retained_rate": 0.0042500599044051806
+        }
+      }
+    }
+  }
+}
