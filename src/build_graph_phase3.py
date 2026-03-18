@@ -9,9 +9,9 @@ import numpy as np
 import pandas as pd
 
 
-# ============================================================
+
 # Config
-# ============================================================
+
 
 DATA_DIR = Path("data/processed")
 ARTIFACT_DIR = Path("artifacts/phase3")
@@ -43,9 +43,9 @@ DROP_FROM_TX_FEATURES = {
 }
 
 
-# ============================================================
+
 # Helpers
-# ============================================================
+
 
 def ensure_dirs() -> None:
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
@@ -423,9 +423,8 @@ def build_phase3_summary_md(metadata: Dict, diagnostics: Dict) -> str:
     return "\n".join(lines)
 
 
-# ============================================================
+
 # Main
-# ============================================================
 
 def main() -> None:
     ensure_dirs()
@@ -444,31 +443,31 @@ def main() -> None:
     full_df = pd.concat([train_df, val_df, test_df], axis=0, ignore_index=True)
     full_df = full_df.sort_values(["TransactionDT", "TransactionID"], kind="mergesort").reset_index(drop=True)
 
-    # ----------------------------
+
     # 2. Build entity keys
-    # ----------------------------
+
     full_df = build_entity_keys(full_df)
 
-    # ----------------------------
+
     # 3. Assign transaction node ids
-    # ----------------------------
+
     full_df = assign_transaction_node_ids(full_df)
 
-    # ----------------------------
+
     # 4. Build transaction node table
-    # ----------------------------
+
     tx_nodes = build_transaction_nodes(full_df)
 
-    # ----------------------------
+
     # 5. Build entity node tables
-    # ----------------------------
+
     card_nodes = build_entity_table(full_df, "card_entity_key", "card_entity", start_node_id=0)
     address_nodes = build_entity_table(full_df, "address_entity_key", "address_entity", start_node_id=0)
     device_nodes = build_entity_table(full_df, "device_entity_key", "device_entity", start_node_id=0)
 
-    # ----------------------------
+
     # 6. Build edge tables
-    # ----------------------------
+
     edges_tx_card = build_edge_table(
         full_df, card_nodes, "card_entity_key", "transaction_to_card"
     )
@@ -479,14 +478,14 @@ def main() -> None:
         full_df, device_nodes, "device_entity_key", "transaction_to_device"
     )
 
-    # ----------------------------
+
     # 7. Build transaction feature table
-    # ----------------------------
+
     tx_features = build_transaction_features(full_df)
 
-    # ----------------------------
+
     # 8. Diagnostics
-    # ----------------------------
+
     diagnostics = {
         "connectivity": connectivity_stats(full_df),
         "card_degree_stats": summarize_degree_stats(edges_tx_card, card_nodes),
@@ -504,9 +503,9 @@ def main() -> None:
         },
     }
 
-    # ----------------------------
+
     # 9. Metadata
-    # ----------------------------
+
     metadata = {
         "graph_version": GRAPH_VERSION,
         "dataset": "IEEE-CIS Fraud Detection train split parquet artifacts from Phase 1",
