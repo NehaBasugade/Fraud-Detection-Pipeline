@@ -10,9 +10,6 @@ import numpy as np
 import pandas as pd
 
 
-# ============================================================
-# Config
-# ============================================================
 
 TRAIN_PATH = Path("data/processed/train_df.parquet")
 VAL_PATH = Path("data/processed/val_df.parquet")
@@ -31,10 +28,8 @@ CARD_FIELDS = ["card1", "card2", "card3", "card5"]
 # Columns used to define graph structure must be removed from tx features.
 GRAPH_STRUCTURE_COLUMNS = CARD_FIELDS
 
-
-# ============================================================
 # Helpers
-# ============================================================
+
 
 def ensure_dirs() -> None:
     ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
