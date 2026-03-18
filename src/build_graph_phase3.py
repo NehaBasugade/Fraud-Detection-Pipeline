@@ -429,9 +429,9 @@ def build_phase3_summary_md(metadata: Dict, diagnostics: Dict) -> str:
 def main() -> None:
     ensure_dirs()
 
-    # ----------------------------
+
     # 1. Load split data
-    # ----------------------------
+
     train_df = pd.read_parquet(TRAIN_PATH).copy()
     val_df = pd.read_parquet(VAL_PATH).copy()
     test_df = pd.read_parquet(TEST_PATH).copy()
@@ -560,9 +560,9 @@ def main() -> None:
         },
     }
 
-    # ----------------------------
+
     # 10. Save artifacts
-    # ----------------------------
+
     tx_nodes.to_parquet(ARTIFACT_DIR / "nodes_transactions.parquet", index=False)
     card_nodes.to_parquet(ARTIFACT_DIR / "nodes_card_entities.parquet", index=False)
     address_nodes.to_parquet(ARTIFACT_DIR / "nodes_address_entities.parquet", index=False)
